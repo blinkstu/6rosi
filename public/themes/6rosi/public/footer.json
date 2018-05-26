@@ -1,0 +1,27 @@
+{
+    "name": "页面底部",
+    "action": "public/Footer",
+    "description": "页面底部设置",
+    "is_public": "1",
+    "order": 1.0,
+    "more": {
+        "vars": {
+            "info": {
+                "title": "声明",
+                "name": "infos",
+                "value": "声明本站所有图片不含有淫秽/色情内容,如有违反法律请联系站长 rosiimage@gmail.com",
+                "type": "text",
+                "tip": "",
+                "rule": []
+            },
+            "copyright": {
+                "title": "版权",
+                "name": "copyright",
+                "value": "本站所有图片均属原创,版权归本站所有,未经同意请勿转载,多谢合作",
+                "type": "text",
+                "tip": "",
+                "rule": []
+            }
+        }
+    }
+}

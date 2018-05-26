@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>样张 {$site_info.site_name|default=''}</title>
+    <meta name="keywords" content="{$site_info.site_seo_keywords|default=''}" />
+    <meta name="description" content="{$site_info.site_seo_description|default=''}">
+    <include file="public@head" />
+    <link href="__TMPL__/public/assets/css/slippry/slippry.css" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/holder/2.9.4/holder.js"></script>
+</head>
+
+<body class="body-white">
+    <include file="public@nav" />
+
+    <div class="container-fill mt-4 d-md-block">
+        <div class="row mx-0">
+            <div class="col-md-2">
+                <div class='big-rect'>
+                    免费样片
+                </div>
+            </div>
+            <div class="col-md-9">
+                <p class='infos'>
+                    <?php
+                        echo str_replace('/n','<br/>',$theme_vars['aboutus']);
+                        ?>
+                </p>
+            </div>
+        </div>
+
+        <ul class="mx-4 mt-4 examples" style="text-align: center;">
+            <foreach name='theme_vars.array' item='vo'>
+                <li><img src="<?php echo cmf_get_image_url($vo['img']) ?>" alt=""></li>
+                
+            </foreach>
+        </ul>
+
+
+
+
+    </div>
+
+
+
+
+    <include file="public@scripts" />
+    <include file="public@footer" />
+</body>
+
+</html>

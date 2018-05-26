@@ -1,0 +1,86 @@
+{
+    "name": "模特招聘页面",
+    "action": "main/Index/models",
+    "description": "",
+    "order": 10.0,
+    "more": {
+        "vars": {
+            "aboutus": {
+                "title": "招聘说明",
+                "value": "1",
+                "type": "textarea",
+                "rule": {
+                    "require": true
+                },
+                "message": {
+                    "require": "不能为空"
+                }
+            },
+            "array": {
+                "title": "模特们",
+                "value": [],
+                "type": "array",
+                "item": {
+                    "nickname": {
+                        "title": "昵称",
+                        "value": "",
+                        "type": "text",
+                        "tip": "",
+                        "rule": {
+                            "require": true
+                        }
+                    },
+                    "height": {
+                        "title": "身高",
+                        "value": "",
+                        "type": "text",
+                        "tip": "",
+                        "rule": {
+                            "require": true
+                        }
+                    },
+                    "size": {
+                        "title": "胸围",
+                        "value": "",
+                        "type": "text",
+                        "tip": "",
+                        "rule": {
+                            "require": true
+                        }
+                    },
+                    "characteristic": {
+                        "title": "特色",
+                        "value": "",
+                        "type": "text",
+                        "tip": "",
+                        "rule": {
+                            "require": true
+                        }
+                    },
+                    "work": {
+                        "title": "代表作",
+                        "value": "",
+                        "type": "text",
+                        "tip": "",
+                        "rule": {
+                            "require": true
+                        }
+                    },
+                    "img": {
+                        "title": "图片",
+                        "value": "",
+                        "type": "image",
+                        "tip": "",
+                        "rule": {
+                            "require": true
+                        }
+                    }
+                },
+                "tip": "点击添加模特",
+                "rule": {
+                    "require": true
+                }
+            }
+        }
+    }
+}

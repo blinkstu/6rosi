@@ -1,0 +1,15 @@
+{
+    "name": "首页 （广告）",
+    "action": "main/Index/index",
+    "description": "",
+    "order": 10.0,
+    "more": {
+        "vars": {
+            "ad_1": {
+                "title": "首页广告图片",
+                "value": "",
+                "type": "image"
+            }
+        }
+    }
+}

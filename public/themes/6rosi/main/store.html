@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>商城 {$site_info.site_name|default=''}</title>
+    <meta name="keywords" content="{$site_info.site_seo_keywords|default=''}" />
+    <meta name="description" content="{$site_info.site_seo_description|default=''}">
+    <include file="public@head" />
+    <link href="__TMPL__/public/assets/css/slippry/slippry.css" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/holder/2.9.4/holder.js"></script>
+</head>
+<script>
+    function resize(element, maxWidth, maxHeight) {
+        if (element.width > maxWidth || element.height > maxHeight) {
+            if (element.width / element.height > maxWidth / maxHeight) {
+                element.width = maxWidth;
+            } else {
+                element.height = maxHeight;
+            }
+        }
+    }
+</script>
+
+
+<body class="body-white">
+    <include file="public@nav" />
+
+    <div class="container-fill  mt-4 d-md-block">
+        <lu class="store">
+            <li>
+                <img src="__STATIC__/images/shopr.png" alt="">
+            </li>
+            <foreach name="red" item='vo'>
+                <li class="">
+                    <a href="/store/{$vo.id}">
+                        <img src='<?php echo cmf_get_image_url(str_replace(".big.",".thumb1.",$vo["big_pic"])) ?>' onload="resize(this,100,100);">
+                        <?php if($vo['stock']<=0){ ?>
+
+                        <span class="class_cover">已售</span>
+
+                        <?php } ?>
+                    </a>
+                </li>
+            </foreach>
+            <li class="end-r">
+                <a href="{:cmf_url('/store/list/1')}">
+                    <img src="__STATIC__/images/more.png" alt="">
+                </a>
+            </li>
+        </lu>
+        <lu class="store">
+            <li>
+                <img src="__STATIC__/images/shopd.png" alt="">
+            </li>
+            <foreach name="blue" item='vo'>
+                <li>
+                    <a href="/store/{$vo.id}">
+                        <img src='<?php echo cmf_get_image_url(str_replace(".big.",".thumb1.",$vo["big_pic"])) ?>' onload="resize(this,100,100);">
+                        <?php if($vo['stock']<=0){ ?>
+
+                        <span class="class_cover">已售</span>
+
+                        <?php } ?>
+                    </a>
+                </li>
+            </foreach>
+            <li class="end-b">
+                <a href="{:cmf_url('/store/list/2')}">
+                    <img src="__STATIC__/images/more.png" alt="">
+                </a>
+
+            </li>
+        </lu>
+
+
+    </div>
+
+
+
+    <script>
+        window.onload = function () {
+            changeWidth();
+        }
+        window.onresize = function () {
+            changeWidth();
+        }
+        function changeWidth() {
+            width = document.body.clientWidth;
+            $('.swiper-wrapper').width(width * 4);
+            $(".swiper-slide").each(function () {
+                $(this).width(document.body.clientWidth);
+            });
+        }
+        $('.nav-items').on('click', function () {
+            $('.active').removeClass('active');
+            $(this).parent().addClass('active');
+            left = width * ($(this).attr('id') - 1);
+            left = 0 - left;
+            $('.swiper-wrapper').css({
+                'transform': 'translateX(' + left + 'px)'
+            })
+        });
+
+    </script>
+
+
+    <include file="public@scripts" />
+    <include file="public@footer" />
+</body>
+
+</html>

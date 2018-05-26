@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>私属下载 {$site_info.site_name|default=''}</title>
+    <meta name="keywords" content="{$site_info.site_seo_keywords|default=''}" />
+    <meta name="description" content="{$site_info.site_seo_description|default=''}">
+    <include file="public@head" />
+    <link href="__TMPL__/public/assets/css/slippry/slippry.css" rel="stylesheet">
+    <link rel="stylesheet" href="__STATIC__/css/bootstrap-chinese-region.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/holder/2.9.4/holder.js"></script>
+
+    <script src="__STATIC__/js/jq/distpicker.data.js"></script>
+    <script src="__STATIC__/js/jq/distpicker.js"></script>
+
+</head>
+<style>
+    body {
+        background: #FFB6C1 !Important;
+    }
+
+    .main {
+        background: #fff;
+        max-width: 880px;
+    }
+
+    #distpicker select {
+        width: 123px;
+        display: inline-block;
+    }
+
+    #distpicker input {
+        width: 300px;
+        display: inline-block;
+    }
+
+    #distpicker label {
+        width: 100%;
+    }
+</style>
+
+<body class="body-white">
+
+    <div class="container p-4 main">
+        <div class="row">
+            <div class="col-md-6">
+                    <h1 class="text-success">私属下载</h1>
+                    <p>您已经购买过此私塾，此份私塾只有您可以下载</p>
+            
+                    <div class="my-3" style="text-align: left">
+                        <img src="__UPLOAD__/{$album.big_pic}" style="width:80%" alt="..." class="img-thumbnail">
+                    </div>
+            
+                    <button type="submit" onclick="download()" class="btn btn-lg submit btn-outline-success "> &nbsp;&nbsp;&nbsp;&nbsp; 点击下载&nbsp;&nbsp;&nbsp;&nbsp; </button>
+                    <button type="submit" onclick="window.close();" class="btn btn-lg submit btn-outline-success ">返回</button>
+            </div>
+            <div class="col-md-6">
+                <h4>订单状态</h4>
+                <table class="table">
+                    <tbody>
+                        <tr>
+                            <td width='200'>私属名称</td>
+                            <td>{$album.title}</td>
+                        </tr>
+                        <tr>
+                            <td>价格</td>
+                            <td>{$album.price}</td>
+                        </tr>
+                        <tr>
+                            <td>收货人</td>
+                            <td>{$order.addressee}</td>
+                        </tr>
+                        <tr>
+                            <td>地址</td>
+                            <td>{$order.address}</td>
+                        </tr>
+                        <tr>
+                            <td>物流单号</td>
+                            <td>
+                                <?php if($order['delivery']==''){ ?>
+                                    <span class='text-danger'>暂时还没有发货</span>
+                                <?php }else{?>
+                                    <span class="text-success">{$order['delivery']}</span>
+                                <?php }?>
+                            </td>
+                        </tr>
+                    </tbody>
+
+                </table>
+            </div>
+        </div>
+        
+
+    </div>
+
+
+    <script>
+        function download(){
+            location.href = '__UPLOAD__/{$album.download_address}';
+        }
+    </script>
+    <script src="__STATIC__/js/layer.js"></script>
+    <include file="public@scripts" />
+
+</body>
+
+</html>

@@ -1,0 +1,21 @@
+{
+  "name": "商品订单详情页面",
+  "action": "user/member/orderdetails",
+  "description": "",
+  "order": 10.0,
+  "more": {
+    "vars": {
+      "delivery_info": {
+        "title": "商品未发货说明",
+        "value": "1",
+        "type": "text",
+        "rule": {
+          "require": true
+        },
+        "message": {
+          "require": "不能为空"
+        }
+      }
+    }
+  }
+}

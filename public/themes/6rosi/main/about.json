@@ -1,0 +1,44 @@
+{
+    "name": "关于页面",
+    "action": "main/Index/about",
+    "description": "",
+    "order": 10.0,
+    "more": {
+        "vars": {
+            "aboutus": {
+                "title": "关于我们字段",
+                "value": "1",
+                "type": "textarea",
+                "rule": {
+                    "require": true
+                },
+                "message": {
+                    "require": "不能为空"
+                }
+            },
+            "start": {
+                "title": "开始年份",
+                "value": "1",
+                "type": "text",
+                "rule": {
+                    "require": true
+                },
+                "message": {
+                    "require": "不能为空"
+                }
+            },
+            "stop": {
+                "title": "结束年份",
+                "value": "1",
+                "type": "text",
+                "rule": {
+                    "require": true
+                },
+                "message": {
+                    "require": "不能为空"
+                }
+            }
+            
+        }
+    }
+}

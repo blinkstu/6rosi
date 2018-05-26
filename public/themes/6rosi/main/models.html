@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>模特 {$site_info.site_name|default=''}</title>
+    <meta name="keywords" content="{$site_info.site_seo_keywords|default=''}" />
+    <meta name="description" content="{$site_info.site_seo_description|default=''}">
+    <include file="public@head" />
+    <link href="__TMPL__/public/assets/css/slippry/slippry.css" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/holder/2.9.4/holder.js"></script>
+</head>
+
+<body class="body-white">
+    <include file="public@nav" />
+
+    <div class="container-fill mt-4 d-md-block">
+        <div class="row mx-0">
+            <div class="col-md-2">
+                <div class='big-rect'>
+                    模特招聘
+                </div>
+            </div>
+            <div class="col-md-6">
+                <p class='infos'>
+                    <?php
+                        echo str_replace('/n','<br/>',$theme_vars['aboutus']);
+                        ?>
+                </p>
+            </div>
+        </div>
+
+        <div class="row mx-4 mt-4">
+            <foreach name='theme_vars.array' item='vo'>
+                <div class="col-md-3">
+                    <div class='m-item'>
+                        <div class='m-img'>
+                            <img src="<?php echo cmf_get_image_url($vo['img']) ?>" alt="">
+                        </div>
+                        <div class="m-text">
+                            <p>昵称：{$vo.nickname}</p>
+                            <p>身高：{$vo.height}</p>
+                            <p>胸围：{$vo.size}</p>
+                            <p>特色：{$vo.characteristic}</p>
+                            <p>代表作：{$vo.work}</p>
+
+                        </div>
+                    </div>
+                </div>
+            </foreach>
+        </div>
+
+
+
+
+    </div>
+
+
+
+
+    <include file="public@scripts" />
+    <include file="public@footer" />
+</body>
+
+</html>

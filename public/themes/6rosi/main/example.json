@@ -1,0 +1,38 @@
+{
+    "name": "样张页面",
+    "action": "main/Index/example",
+    "description": "",
+    "order": 10.0,
+    "more": {
+        "vars": {
+            "aboutus": {
+                "title": "样片说明",
+                "value": "1",
+                "type": "textarea",
+                "rule": {
+                    "require": true
+                },
+                "message": {
+                    "require": "不能为空"
+                }
+            },
+            "array": {
+                "title": "样片",
+                "value": [],
+                "type": "array",
+                "item": {
+                    "img": {
+                        "title": "图片",
+                        "value": "",
+                        "type": "image",
+                        "tip": "",
+                        "rule": {
+                            "require": true
+                        }
+                    }
+                },
+                "tip": "点击添加样片"
+            }
+        }
+    }
+}

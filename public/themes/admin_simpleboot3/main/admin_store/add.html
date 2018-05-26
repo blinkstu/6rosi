@@ -1,0 +1,100 @@
+<include file="public@header" />
+<script src="https://cdn.bootcss.com/datatables/1.10.16/js/jquery.dataTables.min.js"></script>
+
+<style>
+    .dataTables_info {
+        color: #555 !important;
+        padding-top: 0px !important;
+    }
+</style>
+
+<div class="wrap js-check-wrap">
+    <ul class="nav nav-tabs">
+        <li>
+            <a href="/main/admin_store/index.html">所有商品</a>
+        </li>
+        <li class="active">
+            <a href="">添加商品</a>
+        </li>
+    </ul>
+
+    <div class="mt-4 col-md-8" style="margin-top:40px;">
+
+        <form action="{:url('AdminStore/addPost')}" method="post" class="form-horizontal js-ajax-form margin-top-20">
+            <table class="table table-bordered">
+                <tbody>
+                    <tr>
+                        <td width="150">分类
+                            <span class="form-required">*</span>
+                        </td>
+                        <td>
+                            <select class="form-control" name="post[type]" id="exampleFormControlSelect2">
+                                    <option value='1'>Rosi(红色)</option>
+                                    <option value='2'>Disi(蓝色)</option>
+                            </select>
+
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>商品清单：
+                            <span class="form-required">*</span>
+                        </td>
+                        <td>
+                            <input class="form-control" type="text" name="post[title]" id="title" required="" value="" placeholder="请输入标题" aria-required="true">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>价格
+                            <span class="form-required">*</span>
+                        </td>
+                        <td>
+                            <input class="form-control float-left" type="number" name="post[price]" id="price" style='width:150px' required="" value=""
+                                placeholder="价格(人民币)" aria-required="true">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>库存数量
+                            <span class="form-required">*</span>
+                        </td>
+                        <td>
+                            <input class="form-control float-left" type="number" name="post[stock]" id="stock" style='width:150px' required="" value=""
+                                placeholder="库存数量" aria-required="true">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>大图
+                            <span class="form-required">*</span>
+                        </td>
+                        <td>
+                            <input id="photo-1" type="hidden" name="post[big_pic]">
+                            <div class="img-thumbnail" style="overflow: hidden;width:150px;height:150px;">
+                                <img id="photo-1-preview" width="150">
+                            </div>
+                            <br>
+                            <a class="btn btn-default btn-sm" href="javascript:uploadOneImage('图片上传','#photo-1');">选择图片</a>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>特殊说明</td>
+                        <td>
+                            <textarea class="form-control" id="exampleFormControlTextarea1" name='post[extra_info]' rows="3"></textarea>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <div class="form-group">
+                <div class="col-sm-offset-2 col-sm-10">
+                    <button type="submit" class="btn btn-primary js-ajax-submit">{:lang('ADD')}</button>
+                    <a class="btn btn-default" href="{:url('AdminStore/index')}">{:lang('BACK')}</a>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+
+
+<script type="text/javascript" src="__STATIC__/js/admin.js"></script>
+</body>
+
+</html>

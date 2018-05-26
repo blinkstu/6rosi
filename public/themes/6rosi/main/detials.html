@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>{$data.title} {$site_info.site_name|default=''}</title>
+    <meta name="keywords" content="{$site_info.site_seo_keywords|default=''}" />
+    <meta name="description" content="{$site_info.site_seo_description|default=''}">
+    <include file="public@head" />
+    <link href="__TMPL__/public/assets/css/slippry/slippry.css" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/holder/2.9.4/holder.js"></script>
+</head>
+
+<body class="body-white">
+    <include file="public@nav" />
+
+
+    <div class="pt-3 detials limited container-fill">
+        <div class="row m-0">
+            <div class="col-md-5">
+                <img src="<?php echo cmf_get_image_url($data['big_pic']) ?>" style="width: 100%;" alt="">
+            </div>
+            <div class="col-md-4">
+                <div class='info'>
+                    <p>购物清单：{$data.title}</p>
+                    <p>价　　格：
+                        <font class="price">￥{$data.price}</font> 金币</p>
+                    <p>全国包邮：除港\澳\台\等 只发圆通快递</p>
+                    <p>购买流程：</p>
+                    <p>1.付款 - 2.等待发货 - 3.物流单号</p>
+                    <p>
+                        <font style="font-size: 14px;color:#ff0000;">* 商品特殊，一旦售出不退不换，请谨慎购买 客服邮箱：rosishop@qq.com</font>
+                    </p>
+                    <p>
+                        <font style="font-size: 14px;color:#ff0000;"></font>
+                    </p>
+                </div>
+
+            </div>
+            <div class="col-md-3">
+                <div class='info'>
+                    <img src="__STATIC__/images/rs.png" style="width: 100%;" alt="">
+
+
+                    <?php if($data['stock']<= 0){ ?>
+                    <button type="button" disabled onclick="location.href='/orderform/{$data.id}';" class="btn btn-lg btn-outline-success"> &nbsp;&nbsp;&nbsp;&nbsp; 已售出&nbsp;&nbsp;&nbsp;&nbsp; </button>
+                    <?php }else{ ?>
+                    <button type="button"  onclick="location.href='/orderform/{$data.id}';" class="btn btn-lg btn-outline-success"> &nbsp;&nbsp;&nbsp;&nbsp; 立即购买&nbsp;&nbsp;&nbsp;&nbsp; </button>
+                    <?php } ?>
+                </div>
+            </div>
+        </div>
+        <div class="container-fill ">
+            <div class="bleck">
+                <p></p>
+                <div>你可能还喜欢</div>
+                <p></p>
+            </div>
+            <div class="row" style="margin:0">
+                <foreach name='rand' item='vo'>
+                    <div class="col-md-3">
+                        <div class="items">
+                            <a href="/album/{$vo.id}">
+                                <img src='__UPLOAD__/{$vo.big_pic}'>
+                            </a>
+                            <div class="items-text">
+                                <p>
+                                    <i class="fa fa-clock-o normal"></i>
+                                    <?php echo date('Y-m-d', $vo['create_date']); ?>
+                                </p>
+                                <p>
+                                    <i class="fa fa-heart normal"></i> {$vo.views}</p>
+                            </div>
+                        </div>
+
+                    </div>
+                </foreach>
+            </div>
+        </div>
+    </div>
+
+
+
+
+
+
+
+
+    <include file="public@scripts" />
+    <include file="public@footer" />
+</body>
+
+</html>

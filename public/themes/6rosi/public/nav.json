@@ -1,0 +1,19 @@
+{
+    "name": "导航条",
+    "action": "public/Nav",
+    "description": "导航条模板文件",
+    "is_public": "1",
+    "order": 1.0,
+    "more": {
+        "vars": {
+            "info": {
+                "title": "公告",
+                "name": "infos",
+                "value": "本站永久域名 www.rosi.cc 目前正在使用的域名 www.6rosi.com",
+                "type": "text",
+                "tip": "",
+                "rule": []
+            }
+        }
+    }
+}

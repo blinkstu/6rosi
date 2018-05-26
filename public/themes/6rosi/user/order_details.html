@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>已购买</title>
+    <meta name="keywords" content="" />
+    <meta name="description" content="">
+    <link rel="stylesheet" href="__STATIC__/css/check.css">
+    <include file="public@head" />
+</head>
+
+<style>
+    .neworder a {
+        color: #666;
+    }
+
+    .neworder .nav-tabs a {
+        color: #ff2c75;
+    }
+
+    .neworder thead th {
+        border-top: 0;
+        border-bottom-width: 1px;
+    }
+</style>
+
+<body class="body-white">
+    <include file="public@nav" />
+
+    <div class="container text-align-center mt-4">
+        <div class=" mt-4">
+            <div class="col-md-8 mx-auto neworder" style="text-align: center">
+
+
+                <div class="card my-3" id="contact" role="tabpanel" aria-labelledby="contact-tab">
+                    <div class="card-header">
+                        订单详情
+                    </div>
+                    <div class="card-body" style="text-align: left;">
+                        <table class="table table-borded">
+                            <tbody>
+                                <tr>
+                                    <td width="200">商品名称：</td>
+                                    <td>{$item.title}</td>
+                                </tr>
+                                <tr>
+                                    <td width="200">商品详情：</td>
+                                    <td><a href="/store/{$item.id}">点击查看</a></td>
+                                </tr>
+                                <tr>
+                                    <td>联系人：</td>
+                                    <td>{$data.addressee}</td>
+                                </tr>
+                                <tr>
+                                    <td>手机号码：</td>
+                                    <td>{$data.phone}</td>
+                                </tr>
+                                <tr>
+                                    <td>地址：</td>
+                                    <td>{$data.address}</td>
+                                </tr>
+                                <tr>
+                                    <td>物流单号</td>
+                                    <td>
+                                        <?php if($data['delivery']==''){ ?>
+                                        <span class="text-danger">{$theme_vars.delivery_info|default=''}</span>
+                                        <?php }else{ ?>
+                                        <span class="text-success">{$data.delivery}</span>
+                                        <?php } ?>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+
+
+                <button type="button" onclick="window.history.back();" class="btn btn-sm btn-outline-success"> &nbsp;&nbsp;&nbsp;&nbsp; 返回 &nbsp;&nbsp;&nbsp;&nbsp; </button>
+
+            </div>
+
+
+
+        </div>
+
+    </div>
+    <!-- /container -->
+    <include file="public@scripts" />
+    <include file="public@footer" />
+</body>
+
+</html>

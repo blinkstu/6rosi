@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>充值记录</title>
+    <meta name="keywords" content="" />
+    <meta name="description" content="">
+    <link rel="stylesheet" href="__STATIC__/css/check.css">
+    <include file="public@head" />
+</head>
+
+<body class="body-white">
+    <include file="public@nav" />
+
+    <div class="container text-align-center mt-4">
+        <div class=" mt-4">
+            <div class="col-md-7 mx-auto" style="text-align: center">
+
+                <ul class="op_ul">
+                    <li class="op_ul_li">
+                        <div>金币</div>
+                        <div>状态</div>
+                        <div>时间</div>
+                    </li>
+                    <foreach name="data" item="vo">
+                        <li class="op_ul_li">
+                            <div>{$vo.price}金币</div>
+                            <div>
+                                <?php if($vo['status'] == 2){  ?>
+                                <span style="font-size: 12px;">充值成功</span>
+                                <?php }else{ ?>
+                                <span style="font-size: 12px;">处理中</span>
+                                <?php } ?>
+                            </div>
+                            <div>
+                                <?php echo date("Y-m-d",$vo['pay_time']); ?>
+                            </div>
+                        </li>
+                    </foreach>
+                    <li class="op_ul_li">
+                        <?php if(count($data)<=0){  ?>
+                        <span style="font-size: 12px;">没有任何充值记录哦</span>
+                        <?php }else{ ?>
+                        <span style="font-size: 12px;">共
+                            <?php echo count($data); ?> 条记录</span>
+                        <?php } ?>
+                    </li>
+                </ul>
+                <button type="button" onclick="window.history.back();" class="btn btn-sm btn-outline-success"> &nbsp;&nbsp;&nbsp;&nbsp; 返回 &nbsp;&nbsp;&nbsp;&nbsp; </button>
+
+            </div>
+
+
+
+        </div>
+
+    </div>
+    <!-- /container -->
+    <include file="public@scripts" />
+    <include file="public@footer" />
+</body>
+
+</html>

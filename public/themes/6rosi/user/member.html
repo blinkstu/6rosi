@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>会员中心</title>
+    <meta name="keywords" content="" />
+    <meta name="description" content="">
+    <include file="public@head" />
+</head>
+
+<body class="body-white">
+    <include file="public@nav" />
+
+    <div class="container text-align-center">
+        <div class="col-md-7 mx-auto mt-4 mb-4">
+            <ul class='profile'>
+                <li class="left">
+                    <img src="__STATIC__/images/contact.png" alt="">
+                </li>
+                <li class="right">
+                    <p>{$data.user_login}</p>
+                    <p>金币：
+                        <font>{$data.coin}</font>
+                    </p>
+                </li>
+
+            </ul>
+
+            <ul class="meb_tom clearfix">
+                    <li>
+                        <a class="meb_tom_a" href="{:cmf_url('/user/member/coins')}" title="ROSI会员_充值金币" alt="ROSI会员_充值金币">
+                            <div class="meb_a_box">
+                                <div><img src="__STATIC__/images/jinbi.png" class="meb_icon" title="ROSI会员_充值金币" alt="ROSI会员_充值金币"></div>
+                                <div><p class="meb_a_card">充值金币</p></div>
+                            </div><div class="meb_a_cox"><p class="">进入充值 &gt;</p></div>
+                        </a>
+                    </li>
+                    <li>
+                        <a class="meb_tom_a" href="{:cmf_url('/user/member/operations')}" title="ROSI会员_充值记录" alt="ROSI会员_充值记录">
+                            <div class="meb_a_box">
+                                <div><img src="__STATIC__/images/jilu.png" class="meb_icon" title="ROSI会员_充值记录" alt="ROSI会员_充值记录"></div>
+                                <div><p class="meb_a_card">充值记录</p></div>
+                            </div><div class="meb_a_cox"><p class="">进入查看 &gt;</p></div>
+                        </a>
+                    </li>
+                    <li>
+                        <a class="meb_tom_a" href="{:cmf_url('/user/member/orders')}" title="ROSI会员_已购买记录" alt="ROSI会员_已购买记录">
+                            <div class="meb_a_box">
+                                <div><img src="__STATIC__/images/goumai.png" class="meb_icon" title="ROSI会员_已购买记录" alt="ROSI会员_已购买记录"></div>
+                                <div><p class="meb_a_card">已购买</p></div>
+                            </div><div class="meb_a_cox"><p class="">进入查看 &gt;</p></div>
+                        </a>
+                    </li>
+                    <li>
+                        <a class="meb_tom_a" href="{:cmf_url('/user/member/password')}" title="ROSI会员_我的资料" alt="ROSI会员_我的资料">
+                            <div class="meb_a_box">
+                                <div><img src="__STATIC__/images/ziliao.png" class="meb_icon" title="ROSI会员_我的资料" alt="ROSI会员_我的资料"></div>
+                                <div><p class="meb_a_card">我的资料</p></div>
+                            </div><div class="meb_a_cox"><p class="">修改 &gt;</p></div>
+                        </a>
+                    </li>
+                    <li>
+                        <a class="meb_tom_a" href="{:cmf_url('user/Index/logout')}" title="ROSI会员_退出" alt="ROSI会员_退出">
+                            <div class="meb_a_box">
+                                <div><img src="__STATIC__/images/tuichu.png" class="meb_icon" title="ROSI会员_退出" alt="ROSI会员_退出"></div>
+                                <div><p class="meb_a_card">退出</p></div>
+                            </div><div class="meb_a_cox"><p class="">退出 &gt;</p></div>
+                        </a>
+                    </li>
+                </ul>
+        </div>
+
+    </div>
+    <!-- /container -->
+
+    <include file="public@scripts" />
+    <include file="public@footer" />
+</body>
+
+</html>

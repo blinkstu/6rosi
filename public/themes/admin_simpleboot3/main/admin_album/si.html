@@ -1,0 +1,125 @@
+<include file="public@header" />
+<script src="https://cdn.bootcss.com/datatables/1.10.16/js/jquery.dataTables.min.js"></script>
+<script>
+    $(document).ready(function () {
+        $('#loading').hide();
+        $('#table1').show();
+        $('#getdata').button('reset');
+        $('#table1').DataTable({
+            paging: false,
+            "scrollY": "70vh",
+            "sDom": '<"top"if>rt<"bottom"lp><"clear">',
+            "oLanguage": {
+                "sSearch": "搜索：",
+                "sInfo": "<i class='fa fa-info' aria-hidden='true'></i>&nbsp;&nbsp; 共有 _TOTAL_ 个图集",
+            }
+        });
+    });
+</script>
+
+<style>
+    .dataTables_info {
+        color: #555 !important;
+        padding-top: 0px !important;
+    }
+</style>
+
+<div class="wrap js-check-wrap">
+    <ul class="nav nav-tabs">
+        <li >
+            <a href="/main/admin_album/index.html">所有图集</a>
+        </li>
+        <li class="active">
+            <a >私属图集</a>
+        </li>
+        <li>
+            <a href="/main/admin_album/add.html">添加图集</a>
+        </li>
+    </ul>
+
+    <div class="mt-4" style="margin-top:40px;">
+
+        <table id="table1" style='display:none;' class="table table-hover  sortable table-bordered table-list">
+            <thead>
+                <tr>
+                    <th>
+                        <label>
+                            <input type="checkbox" class="js-check-all" data-direction="x" data-checklist="js-check-x">
+                        </label>
+                    </th>
+                    <th class="img">ID</th>
+                    <th>标题</th>
+                    <th>浏览量</th>
+                    <th>大图</th>
+                    <th>分类</th>
+                    <th>时间</th>
+                    <th>操作</th>
+                </tr>
+            </thead>
+            <foreach name="data" item="vo">
+                <tr dataid="{$vo.id}">
+                    <td class="portlet-header">
+                        <i class="fa fa-list-ul" aria-hidden="true"></i>&nbsp;&nbsp;
+                    </td>
+                    <td>
+                        {$vo.id}
+                    </td>
+                    <td>
+                        {$vo.title}
+                    </td>
+                    <td>
+                        {$vo.views}
+                    </td>
+                    <td>
+                        <IMG onclick="parent.imagePreviewDialog(this.src);" src="__UPLOAD__/{$vo.big_pic}" class="img-thumbnail" style="width:60px;height:60px;">
+                    </td>
+                    <td>
+                        私属
+                    </td>
+                    <td>
+                        <?php echo date('Y-m-d', $vo['create_date']); ?>
+                    </td>
+                    <td>
+                        <i class="edit fa fa-edit fa-lg" id="{$vo.id}" stick='' style="cursor:pointer" data-toggle="tooltip" data-placement="left"
+                            title="编辑"></i>
+                        <i class='remove fa fa-times fa-lg' style="cursor:pointer" data-toggle="tooltip" data-placement="left" title="删除此商品"></i>
+                    </td>
+                </tr>
+            </foreach>
+        </table>
+    </div>
+</div>
+
+
+<script>
+    $('.edit').on('click', function () {
+        id = $(this).attr('id');
+        window.location = '/main/admin_album/edit/id/' + id + '/si/hehe';
+    });
+    $(".remove").on("click", function () {
+        id = $(this).parent().parent().attr('dataid');
+        this2 = $(this).parent().parent();
+        layer.open({
+            isOutAnim: false,
+            title: '提示',
+            content: '确定要删除此项吗？',
+            btn: ['确定', '取消']
+            , yes: function (index, layero) {
+                $.post("/api/main/admin_public/remove_album/id/" + id, function (result) {
+                }).success(function () {
+                    this2.remove();
+                    layer.close(index);
+                })
+                    .error(function () {
+                        alert("错误");
+                    });
+            },
+            btn2: function (index, layero) {
+            }
+        });
+    });
+</script>
+<script type="text/javascript" src="__STATIC__/js/admin.js"></script>
+</body>
+
+</html>

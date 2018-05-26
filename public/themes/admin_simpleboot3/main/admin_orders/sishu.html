@@ -1,0 +1,107 @@
+<include file="public@header" />
+
+<style>
+    .dataTables_info {
+        color: #555 !important;
+        padding-top: 0px !important;
+    }
+</style>
+
+<div class="wrap js-check-wrap">
+    <ul class="nav nav-tabs">
+        <li>
+            <a href="/main/admin_orders/index.html">商品订单</a>
+        </li>
+        <li  class="active">
+            <a href="javascript:;">私属订单</a>
+        </li>
+    </ul>
+
+    <div class="mt-4" style="margin-top:40px;">
+
+        <table class="table table-hover table-bordered">
+            <thead>
+                <tr>
+                    <td>#</td>
+                    <td>用户</td>
+                    <td>购买项目</td>
+                    <td>价格</td>
+                    <td>收货人</td>
+                    <td width='200'>收货地址</td>
+                    <td width='200'>物流单号</td>
+                    <td>状态</td>
+                </tr>
+            </thead>
+            <tbody>
+                <foreach name="orders" item='vo' key='key'>
+                    <tr>
+                        <td class='id'>{$vo.id}</td>
+                        <td>{$vo.user.user_login}</td>
+                        <td>{$vo.album.title}</td>
+                        <td>{$vo.album.price}</td>
+                        <td>{$vo.addressee}</td>
+                        <td>{$vo.address}</td>
+                        <td>
+                            <div class="input-group mb-3">
+                                <input type="text" class="form-control" value="{$vo.delivery}">
+                                <div class="input-group-append">
+                                    <button class="btn btn-outline-secondary saving" type="button">保存</button>
+                                </div>
+                            </div>
+                        </td>
+                        <td class='status'>
+                            <?php if($vo['delivery']==''){ ?>
+                            <span class="text-danger">未发货</span>
+                            <?php }else{ ?>
+                            <span class="text-success">已发货</span>
+                            <?php } ?>
+                        </td>
+                    </tr>
+                </foreach>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+
+<script>
+    $('.saving').on('click', function () {
+        this1 = $(this);
+        layer.open({
+            isOutAnim: false,
+            title: '提示',
+            content: '确定修改吗',
+            btn: ['确定', '取消']
+            , yes: function (index, layero) {
+                delivery = this1.parent().parent().children('input').val();
+                id = this1.parent().parent().parent().parent().children('.id').html();
+
+                $.post("/main/admin_orders/deliverysipost/id/" + id + "/delivery/" + delivery , function () {
+                }).success(function (res) {
+                    layer.msg(res.msg);
+                }).error(function () {
+                    alert("错误");
+                });
+
+
+                if (this1.parent().parent().children('input').val() == '') {
+                    this1.parent().parent().parent().parent().children('.status').children('span').html('未发货');
+                    this1.parent().parent().parent().parent().children('.status').children('span').addClass('text-danger');
+                    this1.parent().parent().parent().parent().children('.status').children('span').removeClass('text-success');
+                } else {
+                    this1.parent().parent().parent().parent().children('.status').children('span').html('已发货');
+                    this1.parent().parent().parent().parent().children('.status').children('span').addClass('text-success');
+                    this1.parent().parent().parent().parent().children('.status').children('span').removeClass('text-danger');
+                }
+                layer.close(index);
+
+            },
+            btn2: function (index, layero) {
+            }
+        });
+    });
+</script>
+<script type="text/javascript" src="__STATIC__/js/admin.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,154 @@
+<include file="public@header" />
+
+
+<div class="wrap js-check-wrap">
+
+    <div class="mt-4">
+
+        <div class="col-md-6">
+            <div class="card my-3">
+                <div class="card-body form-inline margin-top-20 margin-bottom-0" method="post" action="">
+                    <h3 class="pull-left" style="margin:0;margin-right:10px;">
+                        <span style="height: 34px; display: block;line-height: 28px;" class="label label-default">图集分类管理</span>
+                    </h3>
+                    <button type="button" onclick="add()" class="btn btn-primary">
+                        添加一个分类</span>
+                    </button>
+                </div>
+            </div>
+            <table id="table1" class="table table-hover  sortable table-bordered table-list mt-4">
+                <thead>
+                    <tr>
+                        <th>id</th>
+                        <th>分类名称</th>
+                        <th>操作</th>
+                    </tr>
+                </thead>
+                <foreach name="data" item="vo">
+                    <tr dataid="{$vo.id}">
+                        <td>
+                            {$vo.id}
+                        </td>
+                        <td>
+                            {$vo.category_name}
+                        </td>
+                        <td>
+                            <i class="edit fa fa-edit fa-lg" cate='{$vo.category_name}' style="cursor:pointer" data-toggle="tooltip" data-placement="left"
+                                title="修改"></i>
+                            <i class='remove fa fa-times fa-lg' style="cursor:pointer" data-toggle="tooltip" data-placement="left" title="删除此分类"></i>
+                        </td>
+                    </tr>
+                </foreach>
+            </table>
+        </div>
+    </div>
+</div>
+
+
+
+<div style="display: none;margin:10px;" id="edit">
+    <div class="input-group">
+        <div class="input-group-prepend">
+            <span class="input-group-text" id="validationTooltipUsernamePrepend">分类名称</span>
+        </div>
+        <input type="text" class="sticktop-num form-control" id='cat_title_edit' placeholder="分类">
+
+    </div>
+</div>
+<div style="display: none;margin:10px;" id="add">
+    <div class="input-group">
+        <div class="input-group-prepend">
+            <span class="input-group-text" id="validationTooltipUsernamePrepend">分类名称</span>
+        </div>
+        <input type="text" class="sticktop-num form-control" id='cat_title_add' placeholder="分类">
+
+    </div>
+</div>
+
+<script>
+    function add() {
+        layer.open({
+            type: 1,
+            closeBtn: 0,
+            area: ['400px', '320px'],
+            title: '添加分类',
+            content: $('#add'),
+            btn: ['保存', '取消']
+            , yes: function (index, layero) {
+                cate_name = $('#cat_title_add').val();
+                $.post("/api/main/admin_public/add_cat?category_name=" + cate_name, function (result) {
+                }).success(function (res) {
+                    layer.msg(res.msg);
+                    layer.close(index);
+                    $('#cat_title').val('');
+                    location.reload();
+                })
+                    .error(function () {
+                        alert("error");
+                    });
+            },
+            btn2: function (index, layero) {
+            }
+        });
+    }
+    $(".edit").on("click", function () {
+        id = $(this).parent().parent().attr('dataid');
+        category = $(this).attr('cate');
+        $('#cat_title_edit').val(category);
+        layer.open({
+            type: 1,
+            closeBtn: 0,
+            area: ['400px', '320px'],
+            title: '修改分类',
+            content: $('#edit'),
+            btn: ['保存', '取消']
+            , yes: function (index, layero) {
+                cate_name = $('#cat_title_edit').val();
+                $.post("/api/main/admin_public/edit_cat?id=" + id + "&category_name=" + cate_name, function (result) {
+                }).success(function (res) {
+                    layer.msg(res.msg);
+                    layer.close(index);
+                    location.reload();
+                })
+                    .error(function () {
+                        alert("错误");
+                    });
+            },
+            btn2: function (index, layero) {
+            }
+        });
+    });
+    $(".remove").on("click", function () {
+        id = $(this).parent().parent().attr('dataid');
+        this2 = $(this).parent().parent();
+        layer.open({
+            isOutAnim: false,
+            title: '提示',
+            content: '谨慎！！！确定要删掉这个分类吗，误删会导致找不到文章',
+            btn: ['确定', '取消']
+            , yes: function (index, layero) {
+                $.post("/api/main/admin_public/remove_cat/id/" + id, function (result) {
+                }).success(function (r) {
+                    if(r.code==1){
+                        this2.remove();
+                        layer.close(index);
+                        location.reload();
+                    }else{
+                        layer.msg(r.msg);
+                    }
+
+                })
+                    .error(function () {
+                        alert("错误");
+                    });
+            },
+            btn2: function (index, layero) {
+            }
+        });
+    });
+
+</script>
+<script type="text/javascript" src="__STATIC__/js/admin.js"></script>
+</body>
+
+</html>

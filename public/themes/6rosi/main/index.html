@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>{$site_info.site_name|default=''}</title>
+    <meta name="keywords" content="{$site_info.site_seo_keywords|default=''}" />
+    <meta name="description" content="{$site_info.site_seo_description|default=''}">
+    <include file="public@head" />
+    <link href="https://cdn.bootcss.com/Swiper/3.4.1/css/swiper.min.css" rel="stylesheet">
+</head>
+
+<body class="body-white">
+    <include file="public@nav" />
+
+
+      	<?php if($theme_vars['ad_1']  != ''){ ?>
+      <nav class="rem_nav container-fill text-align-center">
+        <img src="__UPLOAD__/{$theme_vars.ad_1|default=''}">
+          </nav>
+      <?php } ?>
+
+
+    <div class="line"></div>
+    <div class="nav nav-index">
+        <div class="col-3 active">
+            <a class="nav-items" id='1'>七天</a>
+        </div>
+        <div class="col-3">
+            <a class='nav-items' id='2'>最热</a>
+        </div>
+        <div class="col-3">
+            <a class='nav-items' id='3'>随机</a>
+        </div>
+        <div class="col-3">
+            <a class='nav-items' id='4'>推荐</a>
+        </div>
+    </div>
+    <div class="blockn" style="width:100%;height:50px;display:none;">
+
+    </div>
+    <div class="swiper-container container-fill swiper mt-3">
+        <div class="swiper-wrapper" id='swiper-wrapper' onload="" style="transform: translate3d(0px, 0px, 0px); transition-duration: 0.3s;">
+            <ul class="float-left swiper-slide">
+                <div class="row" style="margin:0">
+                    <foreach name='data.new' item='vo'>
+                        <div class="col-md-3">
+                            <div class="items">
+                                <a href="/album/{$vo.id}<?php if($vo['category_id'] == 10)echo '/si/1'; ?>">
+                                    <img class="fadeIn" data-src='__UPLOAD__/{:str_replace('.big.','.small.',$vo.big_pic)}'>
+                                </a>
+                                <div class="items-text">
+                                    <p>
+                                        <i class="fa fa-clock-o normal"></i>
+                                        <?php echo date('Y-m-d', $vo['create_date']); ?>
+                                    </p>
+                                    <p>
+                                        <i class="fa fa-heart normal"></i> {$vo.views}</p>
+                                </div>
+                            </div>
+
+                        </div>
+                    </foreach>
+                </div>
+            </ul>
+            <ul class="float-left swiper-slide">
+                <div class="row" style="margin:0">
+                    <foreach name='data.hot' item='vo'>
+                        <div class="col-md-3">
+                            <div class="items">
+                                <a href="/album/{$vo.id}">
+                                    <img class="fadeIn" data-src='__UPLOAD__/{:str_replace('.big.','.small.',$vo.big_pic)}'>
+                                </a>
+                                <div class="items-text">
+                                    <p>
+                                        <i class="fa fa-clock-o normal"></i>
+                                        <?php echo date('Y-m-d', $vo['create_date']); ?>
+                                    </p>
+                                    <p>
+                                        <i class="fa fa-heart normal"></i> {$vo.views}</p>
+                                </div>
+                            </div>
+
+                        </div>
+                    </foreach>
+                </div>
+            </ul>
+            <ul class="float-left swiper-slide">
+                <div class="row" style="margin:0">
+                    <foreach name='data.rand' item='vo'>
+                        <div class="col-md-3">
+                            <div class="items">
+                                <a href="/album/{$vo.id}">
+                                    <img src='__UPLOAD__/{:str_replace('.big.','.small.',$vo.big_pic)}'>
+                                </a>
+                                <div class="items-text">
+                                    <p>
+                                        <i class="fa fa-clock-o normal"></i>
+                                        <?php echo date('Y-m-d', $vo['create_date']); ?>
+                                    </p>
+                                    <p>
+                                        <i class="fa fa-heart normal"></i> {$vo.views}</p>
+                                </div>
+                            </div>
+
+                        </div>
+                    </foreach>
+                </div>
+            </ul>
+            <ul class="float-left swiper-slide">
+                <div class="row" style="margin:0">
+                    <foreach name='data.recommend' item='vo'>
+                        <div class="col-md-3">
+                            <div class="items">
+                                <a href="/album/{$vo.id}">
+                                    <img data-src='__UPLOAD__/{:str_replace('.big.','.small.',$vo.big_pic)}'>
+                                </a>
+                                <div class="items-text">
+                                    <p>
+                                        <i class="fa fa-clock-o normal"></i>
+                                        <?php echo date('Y-m-d', $vo['create_date']); ?>
+                                    </p>
+                                    <p>
+                                        <i class="fa fa-heart normal"></i> {$vo.views}</p>
+                                </div>
+                            </div>
+
+                        </div>
+                    </foreach>
+                </div>
+            </ul>
+        </div>
+    </div>
+
+
+
+
+
+    <div class="container-fill d-none d-md-block">
+        <div class="bleck">
+            <p></p>
+            <div>你可能还喜欢</div>
+            <p></p>
+        </div>
+        <div class="row" style="margin:0">
+            <foreach name='data.rand2' item='vo'>
+                <div class="col-md-3">
+                    <div class="items">
+                        <a href="/album/{$vo.id}">
+                            <img data-src='__UPLOAD__/{:str_replace('.big.','.small.',$vo.big_pic)}'>
+                        </a>
+                        <div class="items-text">
+                            <p>
+                                <i class="fa fa-clock-o normal"></i>
+                                <?php echo date('Y-m-d', $vo['create_date']); ?>
+                            </p>
+                            <p>
+                                <i class="fa fa-heart normal"></i> {$vo.views}</p>
+                        </div>
+                    </div>
+
+                </div>
+            </foreach>
+        </div>
+    </div>
+
+
+
+    <script src="https://cdn.bootcss.com/Swiper/3.4.2/js/swiper.jquery.min.js"></script>
+    <script src="https://cdn.bootcss.com/Swiper/2.7.6/idangerous.swiper.min.js"></script>
+
+    <script src="__STATIC__/js/jq/holder.js"></script>
+    <include file="public@scripts" />
+    <script>
+        $( document ).ready(function() {
+            var mySwiper = new Swiper('.swiper-container', {
+                autoHeight: true,
+                onSlideChangeStart: function () {
+                    $(".nav-index .active").removeClass('active');
+                    $(".nav-index .col-3").eq(mySwiper.activeIndex).addClass('active');
+
+                    $(".tabs2 .active").removeClass('active');
+                    $(".nav-index .col-3").eq(mySwiper.activeIndex).addClass('active');
+                }
+            });
+
+
+            $(".nav-index .col-3").on('click', function (e) {
+                e.preventDefault();
+                $(".nav-index .col-3").removeClass('active');
+                $(this).addClass('active');
+                mySwiper.swipeTo($(this).index());
+                $('html, body').animate({
+                    scrollTop: $(".swiper-container").offset().top - 66
+                }, 500);
+            });
+            $(".nav-index .col-3").click(function (e) {
+                e.preventDefault();
+            });	
+        });
+
+        $(document).ready(function () {
+            //获取banner的高度
+            var top = $('.nav-index').offset().top;
+            // console.log(bannerH);
+            //滚动事件
+            $(window).scroll(function () {
+                //滚动的高度
+                var scrollTop = $(this).scrollTop();
+                //判断bannerH大于或者等于scrollTop高度
+                if (scrollTop >= top) {
+                    $('.nav-index').addClass('fixed-top');
+                    $('.blockn').show();
+                } else {
+                    $('.nav-index').removeClass('fixed-top');
+                    $('.blockn').hide();
+
+                }
+            })
+        });
+
+	  
+    </script>
+    <include file="public@footer" />
+</body>
+
+</html>

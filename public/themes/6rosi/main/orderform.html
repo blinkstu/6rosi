@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>填写订单 {$site_info.site_name|default=''}</title>
+    <meta name="keywords" content="{$site_info.site_seo_keywords|default=''}" />
+    <meta name="description" content="{$site_info.site_seo_description|default=''}">
+    <include file="public@head" />
+    <link href="__TMPL__/public/assets/css/slippry/slippry.css" rel="stylesheet">
+    <link rel="stylesheet" href="__STATIC__/css/bootstrap-chinese-region.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/holder/2.9.4/holder.js"></script>
+
+
+</head>
+<style>
+    body {
+        background: #42586f !Important;
+    }
+
+    .main {
+        background: #fff;
+        max-width: 880px;
+    }
+
+    #distpicker select {
+        width: 123px;
+        display: inline-block;
+    }
+
+    #distpicker input {
+        width: 300px;
+        display: inline-block;
+    }
+
+    #distpicker label {
+        width: 100%;
+    }
+</style>
+
+<body class="body-white">
+
+    <div class="container p-4 main">
+        <h1 class="text-success">订单填写</h1>
+        <p>请填写真实地址和信息，以保证能收到货物</p>
+
+        <div class="card p-4">
+            <h5 class="text-danger">购买: {$item.title}</h5>
+            <h5 class="text-danger">价格: {$item.price} 金币</h5>
+        </div>
+        <form class="needs-validation" id="form1" novalidate>
+            <input type="hidden" name='id' value="{$item.id}">
+            <div class="form-group mt-4">
+                <div class="form-row" style="max-width: 500px;">
+                    <div class="form-group col-md-6">
+                        <label for="inputEmail4">收件人：</label>
+                        <input type="text" class="form-control" name='post[addressee]' required id="inputEmail4" placeholder="收件人">
+                        <div class="invalid-feedback">
+                            请输入收件人姓名
+                        </div>
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label for="inputPassword4">收件人手机：</label>
+                        <input type="number" class="form-control" name='post[phone_number]' required id="inputPassword4" placeholder="手机号码">
+                        <div class="invalid-feedback">
+                            请输入手机号
+                        </div>
+                    </div>
+                </div>
+                <div id='distpicker' data-toggle="distpicker" class="form-group">
+                    <label for="validationDefaultUsername">地址：</label>
+                    <select class="form-control" name='province' required></select>
+                    <select class="form-control" name='city' required></select>
+                    <select class="form-control" name='block' required></select>
+                    <input type="text" class="form-control" name='address' required id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="街道/小区地址">
+                    <div class="invalid-feedback">
+                        街道为必填
+                    </div>
+                </div>
+            </div>
+
+            <?php
+        $user=cmf_get_current_user();
+        $user= think\Db::name('user')->where('id',$user['id'])->find();
+        if($user['coin']<$item['price']){
+        ?>
+            <button type="button" class="btn btn-sm btn-outline-success mt-4" disabled> &nbsp;&nbsp;&nbsp;&nbsp; 金币不足 无法购买 &nbsp;&nbsp;&nbsp;&nbsp; </button>
+
+            <?php }else{ ?>
+            <button type="submit" class="btn btn-sm submit btn-outline-success mt-4"> &nbsp;&nbsp;&nbsp;&nbsp; 确认购买 &nbsp;&nbsp;&nbsp;&nbsp; </button>
+            <?php } ?>
+
+            <button type="button" onclick="history.back()" class="btn btn-sm btn-outline-success mt-4">返回</button>
+
+        </form>
+    </div>
+
+    <include file="public@scripts" />
+    <script>
+        // Example starter JavaScript for disabling form submissions if there are invalid fields
+        (function () {
+            'use strict';
+            window.addEventListener('load', function () {
+                // Fetch all the forms we want to apply custom Bootstrap validation styles to
+                var forms = document.getElementsByClassName('needs-validation');
+                // Loop over them and prevent submission
+                var validation = Array.prototype.filter.call(forms, function (form) {
+                    form.addEventListener('submit', function (event) {
+                        if (form.checkValidity() === false) {
+                            event.preventDefault();
+                            event.stopPropagation();
+                        }
+                        form.classList.add('was-validated');
+                    }, false);
+                });
+            }, false);
+        })();
+    </script>
+
+<script src="__STATIC__/js/jq/distpicker.data.js"></script>
+<script src="__STATIC__/js/jq/distpicker.js"></script>
+    <script>
+        var $distpicker = $('#distpicker');
+        $distpicker.distpicker();
+
+        $('#form1').submit(function (e) {
+            e.preventDefault();
+            var form = document.getElementsByClassName('needs-validation')[0];
+
+            id = '{$item.id}';
+
+            if (form.checkValidity() === false) {
+                return false;
+            }
+
+            $('.submit').html('&nbsp;&nbsp;&nbsp;&nbsp; 请稍等... &nbsp;&nbsp;&nbsp;&nbsp;');
+
+            $.ajax({
+                type: "POST",
+                url: "/main/order/orderPost/",
+                data: $("#form1").serialize(),
+                success: function (r) {
+                    if (r.code == 1) {
+                        layer.msg(r.msg, { icon: 1 });
+                        location.href = '/user/member/orders';
+                    } else {
+                        layer.msg(r.msg, { icon: 5 })
+                    }
+                    $('.submit').html(' &nbsp;&nbsp;&nbsp;&nbsp; 确认购买&nbsp;&nbsp;&nbsp;&nbsp; ');
+                }
+            });
+        });
+
+    </script>
+    <script src="__STATIC__/js/layer.js"></script>
+
+
+</body>
+
+</html>

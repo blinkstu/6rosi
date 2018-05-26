@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>下载文件 {$site_info.site_name|default=''}</title>
+    <meta name="keywords" content="{$site_info.site_seo_keywords|default=''}" />
+    <meta name="description" content="{$site_info.site_seo_description|default=''}">
+    <include file="public@head" />
+    <link href="__TMPL__/public/assets/css/slippry/slippry.css" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/holder/2.9.4/holder.js"></script>
+
+</head>
+
+<body class="body-white">
+    <include file="public@nav" />
+
+
+    <div class="pt-3 detials limited container-fill">
+        <div class="col-md-5 mx-auto" style="text-align: center">
+			<?php $user= think\Db::name('user')->where('id',$user['id'])->find(); ?>
+            <div class="alert alert-primary <?php if($data['state'] == 4){echo 'alert-danger'; } ?>" role="alert">
+                {$data.msg}
+            </div>
+            <?php if($data['state'] == 1 || $data['state'] ==2){ ?>
+            <div class="my-3" style="text-align: center">
+                <img src="__UPLOAD__/{$album.big_pic}" style="width:50%" alt="..." class="img-thumbnail">
+            </div>
+            <button type="submit" onclick="download()" class="btn btn-lg submit btn-outline-success "> &nbsp;&nbsp;&nbsp;&nbsp; 确定下载&nbsp;&nbsp;&nbsp;&nbsp; </button>
+            <?php }else if($data['state'] == 3){ ?>
+            <div class="my-3" style="text-align: center">
+                <img src="__UPLOAD__/{$album.big_pic}" style="width:50%" alt="..." class="img-thumbnail">
+            </div>
+            <p>下载此图集需要 {$album.price} 个金币 , 您有金币 {$user.coin} 个</p>
+            <a class="btn btn-lg submit btn-outline-success " href="/user/member/coins.html">充值金币</a>
+
+            <?php }else{ ?>
+                
+                <button type="button" onclick="window.close();" class="btn btn-sm btn-outline-success"> &nbsp;&nbsp;&nbsp;&nbsp;  返回  &nbsp;&nbsp;&nbsp;&nbsp; </button>
+
+            <?php } ?>
+        </div>
+    </div>
+
+
+    <script>
+
+        function download() {
+            id = '{$album.id}';
+
+            $('.submit').html('&nbsp;&nbsp;&nbsp;&nbsp; 请稍等... &nbsp;&nbsp;&nbsp;&nbsp;');
+
+            $.post("/main/download/getUrlPost/id/" + id, function (result) {
+            }).success(function (r) {
+                if (r.code == 1) {
+                    layer.msg(r.msg.msg, { icon: 1 });
+                    location.href = r.msg.url;
+                } else {
+                    layer.msg(r.msg, { icon: 5 })
+                }
+
+                $('.submit').html(' &nbsp;&nbsp;&nbsp;&nbsp; 确定下载&nbsp;&nbsp;&nbsp;&nbsp; ');
+            }).error(function () {
+                alert("错误");
+            });
+
+        }
+
+    </script>
+
+    <include file="public@scripts" />
+    <script src="__STATIC__/js/layer.js"></script>
+    <include file="public@footer" />
+</body>
+
+</html>

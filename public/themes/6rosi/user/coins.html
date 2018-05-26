@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>金币充值</title>
+    <meta name="keywords" content="" />
+    <meta name="description" content="">
+    <link rel="stylesheet" href="__STATIC__/css/check.css">
+    <include file="public@head" />
+</head>
+
+<body class="body-white">
+    <include file="public@nav" />
+    <?php $user= think\Db::name('user')->where('id',$user['id'])->find(); ?>
+    <div class="container text-align-center">
+        <div class=" mt-4">
+            <ul class='profile'>
+                <li class="left">
+                    <img src="__STATIC__/images/contact.png" alt="">
+                </li>
+                <li class="right">
+                    <p>{$user['user_login']}</p>
+                    <p>金币：
+                        <font>{$user['coin']}</font>
+                    </p>
+                </li>
+            </ul>
+
+            <div class="col-md-7 mx-auto">
+                <form action="/codepay/codepay.php" target="_blank">
+                    <input type="hidden" name="user" value="{$user['id']}">
+                    <input type="hidden" name="type" value="1">
+                    <div class="coins">
+                        <div class="weui_cellss weui_cells_radio" onclick="show(1)">
+                            <label class="weui_cellsp weui_check_label">
+                                <div class="weui_cell_ft">
+                                    <div class="pretty p-default p-round p-thick">
+                                        <input name='price' value="1" type="radio" checked />
+                                        <div class="state">
+                                            <label></label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="weui_cell_bd"> 1金币 </div>
+                                <div class="weui_cell_pq weui_cell_primary">
+                                    <div class="weui_cell_a">1.00 元</div>
+                                </div>
+                            </label>
+                        </div>
+                        <div class="weui_cellss weui_cells_radio" onclick="show(1)">
+                            <label class="weui_cellsp weui_check_label">
+                                <div class="weui_cell_ft">
+                                    <div class="pretty p-default p-round p-thick">
+                                        <input name='price' value="20" type="radio" checked />
+                                        <div class="state">
+                                            <label></label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="weui_cell_bd"> 20金币 </div>
+                                <div class="weui_cell_pq weui_cell_primary">
+                                    <div class="weui_cell_a">20.00 元</div>
+                                </div>
+                            </label>
+                        </div>
+                        <div class="weui_cellss weui_cells_radio" onclick="show(2)">
+                            <label class="weui_cellsp weui_check_label">
+                                <div class="weui_cell_ft">
+                                    <div class="pretty p-default p-round p-thick">
+                                        <input name='price' value="100" type="radio" />
+                                        <div class="state">
+                                            <label></label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="weui_cell_bd"> 100金币 </div>
+                                <div class="weui_cell_pq weui_cell_primary">
+                                    <div class="weui_cell_a">100.00 元</div>
+                                </div>
+                            </label>
+                        </div>
+                        <div class="weui_cellss weui_cells_radio" onclick="show(2)">
+                            <label class="weui_cellsp weui_check_label">
+                                <div class="weui_cell_ft">
+                                    <div class="pretty p-default p-round p-thick">
+                                        <input name='price' value="200" type="radio" />
+                                        <div class="state">
+                                            <label></label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="weui_cell_bd"> 200金币 </div>
+                                <div class="weui_cell_pq weui_cell_primary">
+                                    <div class="weui_cell_a">200.00 元</div>
+                                </div>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="payment">
+                        <div class="weui_cellss weui_cells_radio " style="border-bottom:1px solid #e9e8ea;">
+                            <label class="weui_cellsp weui_check_label">
+                                <div class="weui_cell_b">
+                                    <img class="weui_img_ali" src="__STATIC__/images/alipay.png" title="">
+                                </div>
+                                <div class="weui_cell_bd">
+                                    支付宝付款
+                                </div>
+                                <div class="weui_cell_ft">
+                                    <div class="pretty p-default p-round p-thick">
+                                        <input name='payment' type="radio" checked />
+                                        <div class="state">
+                                            <label></label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </label>
+                        </div>
+                    </div>
+                    <div style="text-align: center;margin-top:30px;">
+                        <button type="submit" class="btn btn-sm btn-outline-success"> &nbsp;&nbsp;&nbsp;&nbsp; 购买&nbsp;&nbsp;&nbsp;&nbsp; </button>
+                        <button type="button" onclick="window.history.back();" class="btn btn-sm btn-outline-success"> &nbsp;&nbsp;&nbsp;&nbsp; 返回 &nbsp;&nbsp;&nbsp;&nbsp; </button>
+                    </div>
+                </form>
+            </div>
+
+
+
+        </div>
+
+    </div>
+    <!-- /container -->
+    <include file="public@scripts" />
+    <include file="public@footer" />
+</body>
+
+</html>

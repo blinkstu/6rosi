@@ -1,0 +1,35 @@
+.input-order {
+	width: 30px;
+}
+
+.wrap {
+	padding: 20px 20px 70px;
+}
+
+.margin-top-10 {
+	margin-top: 10px !important;
+}
+
+.margin-top-20 {
+	margin-top: 20px !important;
+}
+
+.nav-tabs li a{
+	border: 1px solid transparent;
+    border-top-left-radius: .25rem;
+	border-top-right-radius: .25rem;
+	display: block;
+	padding: .5rem 1rem;
+	text-decoration: none;
+	margin-bottom:-1px;
+}
+
+.nav-tabs .active a{
+    color: #495057;
+    background-color: #fff;
+    border-color: #dee2e6 #dee2e6 #fff;
+}
+
+.navbar-default{
+	background: #000;
+}

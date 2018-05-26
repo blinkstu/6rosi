@@ -1,0 +1,173 @@
+<include file="public@header" />
+<script type="text/html" id="photos-item-tpl">
+    <li class="admin-li"  id="saved-image{id}">
+            <span>{key}</span>
+        <input id="photo-{id}" type="hidden" name="photo_urls[]" value="{filepath}">
+        <input class="form-control" id="photo-{id}-name" type="text" name="photo_names[]" value="{name}"
+               style="width: 200px;" title="图片名称">
+        <img id="photo-{id}-preview" src="{url}" style="height:36px;width: 36px;"
+             onclick="imagePreviewDialog(this.src);">
+        <a href="javascript:uploadOneImage('图片上传','#photo-{id}');">替换</a>
+        <a href="javascript:(function(){$('#saved-image{id}').remove();})();keyOrder();">移除</a>
+    </li>
+</script>
+<style>
+    .admin-li {
+        width: 100%;
+        padding: 2px 0;
+    }
+
+    .admin-li span {
+        width: 20px;
+        display: none;
+    }
+
+    .order {
+        display: inline-block;
+    }
+</style>
+
+<div class="wrap js-check-wrap">
+
+    <ul class="nav nav-tabs">
+        <li>
+            <a href="/main/admin_album/index.html">所有图集</a>
+        </li>
+        <li>
+            <a href="/main/admin_album/si.html">私属图集</a>
+        </li>
+        <li>
+            <a href="/main/admin_album/add.html">添加图集</a>
+        </li>
+        <li class="active">
+            <a href="javascript:;">编辑</a>
+        </li>
+    </ul>
+
+
+
+    <div class="col-md-9">
+        <form action="{:url('AdminAlbum/editPost')}" method="post" class="form-horizontal js-ajax-form margin-top-20">
+            <input class="form-control" type="hidden" name="id" id="title" required="" value="{$data.id}" placeholder="请输入标题" aria-required="true">
+            <table class="table table-bordered">
+                <tbody>
+                    <php> if(!empty($si)){ </php>
+                    <input type="hidden" name='post[category_id]' value="10">
+                    <php> } </php>
+
+                    <php> if(empty($si)){ </php>
+                    <tr>
+                        <th width="100">分类
+                            <span class="form-required">*</span>
+                        </th>
+                        <td>
+                            <select class="form-control" name="post[category_id]" id="exampleFormControlSelect2">
+                                <foreach name='cate_data' item='vo'>
+                                    <option value='{$vo.id}' <php> if($data['category_id']==$vo[ 'id']){ echo 'selected="selected"'; } </php> >{$vo.category_name}</option>
+                                </foreach>
+                            </select>
+                        </td>
+                    </tr>
+                    <php> } </php>
+                    <tr>
+                        <th width="100">标题
+                            <span class="form-required">*</span>
+                        </th>
+                        <td>
+                            <input class="form-control" type="text" name="post[title]" id="title" required="" value="{$data.title}" placeholder="请输入标题"
+                                aria-required="true">
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>价格
+                            <span class="form-required">*</span>
+                        </th>
+                        <td>
+                            <input class="form-control float-left" type="number" name="post[price]" id="price" style='width:150px' required="" value="{$data.price}"
+                                placeholder="价格(金币)" aria-required="true">
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>大图
+                            <span class="form-required">*</span>
+                        </th>
+                        <td>
+                            <input id="photo-1" type="hidden" name="post[big_pic]" value="{$data.big_pic}">
+                            <div class="img-thumbnail" style="overflow: hidden;width:150px;height:150px;">
+                                <img id="photo-1-preview" width="150" src='__UPLOAD__/{$data.big_pic}'>
+                            </div>
+                            <br>
+                            <a class="btn btn-default btn-sm" href="javascript:uploadOneImage('图片上传','#photo-1');">选择图片</a>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>小图片集合
+                            <span class="form-required">*</span>
+                        </th>
+                        <td class="small-pics">
+                            <ul id="photos" class="pic-list list-unstyled form-inline">
+                                <foreach name="$photos" item="vo" key="key">
+                                    <php>$img_url=cmf_get_image_preview_url($vo['url']);</php>
+                                    <li class="admin-li" id="saved-image{$key}">
+                                        <span>
+                                            <?php echo $key+1 ?>
+                                        </span>
+                                        <input id="photo-{$key}" type="hidden" name="photo_urls[]" value="{$vo.url}">
+                                        <input class="form-control" id="photo-{$key}-name" type="text" name="photo_names[]" value="{$vo.name|default=''}" style="width: 200px;"
+                                            title="图片名称">
+                                        <img id="photo-{$key}-preview" src="{:cmf_get_image_preview_url($vo['url'])}" style="height:36px;width: 36px;" onclick="parent.imagePreviewDialog(this.src);">
+                                        <a href="javascript:uploadOneImage('图片上传','#photo-{$key}');">替换</a>
+                                        <a href="javascript:(function(){$('#saved-image{$key}').remove();})();keyOrder();">移除</a>
+                                    </li>
+                                </foreach>
+                            </ul>
+                            <a href="javascript:uploadMultiImageOrder('图片上传','#photos','photos-item-tpl');" class="btn btn-default btn-sm">选择图片</a>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>上传文件</td>
+                        <td>
+                            <input id="file-1" type="hidden" name="post[download_address]" value="{$data.download_address}">
+                            <input class="form-control mb-2" id="file-1-name" type="text" name="file_name" value='{$name}' title="名称" readonly>
+                            <a id="file-1-preview" target="_blank" href="<?php echo '/upload/' . $data['download_address']; ?>">下载</a>
+                            <a class="btn btn-primary btn-sm" href="javascript:uploadCloudOne('','#file-1','file');">上传</a>
+                            <p>推荐上传zip或者rar格式的压缩包</p>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td>推荐所有图大小为1400 x 934像素,以达到最佳显示效果,小图可以自动被裁剪,小图片最好20张,或者12张</td>
+                    </tr>
+                </tbody>
+            </table>
+            <div class="form-group">
+                <div class="col-sm-offset-2 col-sm-10">
+                    <button type="submit" class="btn btn-primary js-ajax-submit">{:lang('SAVE')}</button>
+                    <a class="btn btn-default" onclick="history.back();">{:lang('BACK')}</a>
+                </div>
+            </div>
+        </form>
+    </div>
+
+</div>
+
+
+<script>
+    window.onload = function () {
+        keyOrder();
+    }
+
+    function keyOrder() {
+        $(".order").each(function (index, value) {
+            $(this).remove();
+        });
+        $(".admin-li").each(function (index, value) {
+            order = index + 1
+            $(this).prepend('<div class="order">' + order + '</div>');
+        });
+    }
+</script>
+<script type="text/javascript" src="__STATIC__/js/admin.js"></script>
+</body>
+
+</html>

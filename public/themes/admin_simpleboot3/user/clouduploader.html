@@ -1,0 +1,398 @@
+<!doctype html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <!-- Set render engine for 360 browser -->
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- HTML5 shim for IE8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+    <![endif]-->
+
+
+    <link href="__ADMIN_TMPL__/public/assets/themes/{:cmf_get_admin_style()}/bootstrap.min.css" rel="stylesheet">
+    <link href="__STATIC__/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+    <script src="__ROOT__/static/js/jq/index.js?v=<?php echo time(); ?>"></script>
+    <style>
+        form .input-order {
+            margin-bottom: 0px;
+            padding: 0 2px;
+            width: 42px;
+            font-size: 12px;
+        }
+
+        form .input-order:focus {
+            outline: none;
+        }
+
+        .table-actions {
+            margin-top: 5px;
+            margin-bottom: 5px;
+            padding: 0px;
+        }
+
+        .table-list {
+            margin-bottom: 0px;
+        }
+
+        .form-required {
+            color: red;
+        }
+
+        .progress {
+            height: 20px;
+        }
+
+        .progress .progress-bar {
+            font-size: 20px;
+            line-height: 20px;
+        }
+    </style>
+    <script type="text/javascript">
+        //全局变量
+        var GV = {
+            ROOT: "__ROOT__/",
+            WEB_ROOT: "__WEB_ROOT__/",
+            JS_ROOT: "static/js/",
+            APP: '{$Request.module}'/*当前应用名*/
+        };
+    </script>
+    <script src="__STATIC__/js/wind.js"></script>
+
+
+    <if condition="APP_DEBUG">
+        <style>
+            #think_page_trace_open {
+                z-index: 9999;
+            }
+        </style>
+    </if>
+    <style>
+        .state-complete .progress {
+            display: none;
+        }
+
+        #uploader .statusBar .progress {
+            vertical-align: middle;
+            margin-bottom: 0;
+        }
+
+        #uploader .statusBar {
+            padding: 0 15px;
+        }
+
+        #uploader .statusBar .info {
+            line-height: 1.2 !important;
+            vertical-align: middle;
+        }
+    </style>
+</head>
+
+<body class="body_none">
+
+    <div class="wrap col-md-5" style="padding:5px;">
+        <ul class="nav nav-tabs">
+            <li class="active">
+                <a>
+                    <b class="text-danger">上传到OSS</b>
+                </a>
+            </li>
+            <!--<li class=""><a href="#explorer" data-toggle="tab">文件管理</a></li>-->
+        </ul>
+        <div class="tabbable">
+            <div class="tab-content " style="padding:10px;">
+                <div class="tab-pane active" id="wrapper">
+                    <div class="panel-body">
+                        <div class="alert alert-warning" style="display: none" id='uploaded' role="alert">已上传文件： </div>
+                        <form action="" class="form-horizontal">
+                            <input type="hidden" class="form-control" id="object-key-file" value="object" />
+                            <div class="form-group">
+                                <label>选择文件</label>
+                                <input type="file" id="file" />
+                            </div>
+                            <div class="progress">
+                                <div id="progress-bar" class="progress-bar  progress-bar progress-bar-striped" role="progressbar" aria-valuenow="0" aria-valuemin="0"
+                                    aria-valuemax="100" style="min-width: 2em;">
+                                    0%
+                                </div>
+                            </div>
+                            <div class="upload-operation">
+                                <div class="form-group" style="float: left">
+                                    <input type="button" class="btn btn-primary" id="file-button" value="上传" />
+                                </div>
+                            </div>
+                        </form>
+                        <br />
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <script>
+        window.accessKeyId = 'LTAIjnSbZrUHxzFm';
+        window.accessKeySecret = 'F1OGALcUGSdbboMIBHrBDlqhl1IJMJ';
+    </script>
+    <script src="https://cdn.bootcss.com/jquery/2.2.4/jquery.min.js"></script>
+    <script src="__ADMIN_TMPL__/public/assets/js/bootstrap.min.js"></script>
+    <script src="__ROOT__/static/js/admin.js"></script>
+
+    <SCript>
+        function get_selected_files() {
+            var files = [];
+
+            var idPre = 'id' + new Date().getTime();
+
+            if (jQuery("#wrapper").is(":hidden")) {
+                var file = new Object();
+                file.id = idPre + '1';
+                file.filepath = jQuery("#info").val();
+                file.preview_url = file.filepath;
+                file.url = file.filepath;
+                file.name = "";//jQuery(".filelist li .title").eq(i).html();
+                files.push(file);
+            } else {
+                var number = jQuery(".filelist li").size();
+                for (var i = 0; i < number; i++) {
+
+                    var file = new Object();
+                    var $file = jQuery(".filelist li").eq(i);
+                    file.id = idPre + i;
+                    file.filepath = $file.data("filepath");
+                    file.preview_url = $file.data("preview_url");//httpUrl+file.filepath;
+                    file.url = $file.data("url");
+                    file.name = $file.data("name");
+                    if (file.url == undefined) {
+                        continue;
+                    } else {
+                        files.push(file);
+                    }
+
+                }
+            }
+
+            return files;
+        }
+
+        let currentCheckpoint;
+        const progress = function (p, checkpoint) {
+            return function (done) {
+                currentCheckpoint = checkpoint;
+                const bar = document.getElementById('progress-bar');
+                bar.style.width = `${Math.floor(p * 100)}%`;
+                bar.innerHTML = `${Math.floor(p * 100)}%`;
+                done();
+            };
+        };
+
+        let uploadFileClient;
+
+        const uploadFile = function (client) {
+            if (!uploadFileClient || Object.keys(uploadFileClient).length === 0) {
+                uploadFileClient = client;
+            }
+
+            const file = document.getElementById('file').files[0];
+            const key = document.getElementById('object-key-file').value.trim() || 'object';
+
+            console.log(`${file.name} => ${key}`);
+            $("#file-button").attr("disabled", 'disabled');
+            $('.progress-bar').addClass('active');
+            const options = {
+                progress,
+                partSize: 100 * 1024,
+                meta: {
+                    year: 2017,
+                    people: 'test',
+                },
+            };
+            if (currentCheckpoint) {
+                options.checkpoint = currentCheckpoint;
+            }
+            return uploadFileClient.multipartUpload(key, file, options).then((res) => {
+                console.log('upload success: %j', res);
+                $('#uploaded').show();
+                $('#uploaded').html('已上传文件：' + res.name);
+                $("#file-button").removeAttr("disabled");
+                $('.progress-bar').removeClass('active');
+                currentCheckpoint = null;
+                uploadFileClient = null;
+            }).catch((err) => {
+                if (uploadFileClient && uploadFileClient.isCancel()) {
+                    console.log('stop-upload!');
+                } else {
+                    console.error(err);
+                }
+            });
+        };
+
+        const base64progress = function (p) {
+            return function (done) {
+                const bar = document.getElementById('base64-progress-bar');
+                bar.style.width = `${Math.floor(p * 100)}%`;
+                bar.innerHTML = `${Math.floor(p * 100)}%`;
+                done();
+            };
+        };
+
+        /**
+         * base64 to file
+         * @param dataurl   base64 content
+         * @param filename  set up a meaningful suffix, or you can set mime type in options
+         * @returns {File|*}
+         */
+        const dataURLtoFile = function dataURLtoFile(dataurl, filename) {
+            const arr = dataurl.split(',');
+            const mime = arr[0].match(/:(.*?);/)[1];
+            const bstr = atob(arr[1]);
+            let n = bstr.length;
+            const u8arr = new Uint8Array(n);
+            while (n--) {
+                u8arr[n] = bstr.charCodeAt(n);
+            }
+            return new Blob([u8arr], { type: mime });// if env support File, also can use this: return new File([u8arr], filename, { type: mime });
+        };
+
+        const uploadBase64Img = function uploadBase64Img(client) {
+            const base64Content = document.getElementById('base64-file-content').value.trim();
+            const key = document.getElementById('base64-object-key-file').value.trim() || 'object';
+            if (base64Content.indexOf('data:image') === 0) {
+                const imgfile = dataURLtoFile(base64Content, 'img.png');
+                client.multipartUpload(key, imgfile, {
+                    progress: base64progress,
+                }).then((res) => {
+                    console.log('upload success: %j', res);
+                }).catch((err) => {
+                    console.error(err);
+                });
+            } else {
+                alert('Please fill in the correct Base64 img');
+            }
+        };
+
+        const listFiles = function (client) {
+
+            console.log('list files');
+        };
+
+        /* eslint no-unused-vars: [0] */
+        const uploadContent = function (client) {
+            const content = document.getElementById('file-content').value.trim();
+            const key = document.getElementById('object-key-content').value.trim() || 'object';
+            console.log(`content => ${key}`);
+
+            return client.put(key, new Buffer(content)).then(res => listFiles(client));
+        };
+
+        const uploadBlob = function (client) {
+            const content = document.getElementById('file-blob').value.trim();
+            const key = document.getElementById('object-key-blob').value.trim() || 'blob';
+            console.log(`content => ${key}`);
+
+            return client.put(key, new Blob([content], { type: 'text/plain' })).then(res => listFiles(client));
+        };
+
+        const putBlob = function (client) {
+            const content = document.getElementById('put-blob').value.trim();
+            const key = document.getElementById('object-key-put-blob').value.trim() || 'blob';
+            const md5String = crypto.createHash('md5').update(new Buffer(content, 'utf8')).digest('base64');
+            const options = {
+                expires: 1800,
+                method: 'PUT',
+                'Content-Type': 'text/plain; charset=UTF-8',
+                'Content-Md5': md5String,
+            };
+            const url = client.signatureUrl(key, options);
+
+            return $.ajax({
+                url,
+                method: 'PUT',
+                data: content,
+                beforeSend(xhr) {
+                    xhr.setRequestHeader('Content-Type', 'text/plain; charset=UTF-8');
+                    xhr.setRequestHeader('Content-MD5', md5String);
+                },
+                crossDomain: true,
+                complete(jqXHR, textStatus) {
+                    console.log(textStatus);
+                },
+            });
+        };
+
+        const downloadFile = function (client) {
+            const object = document.getElementById('dl-object-key').value.trim();
+            const filename = document.getElementById('dl-file-name').value.trim();
+            console.log(`${object} => ${filename}`);
+
+            const result = client.signatureUrl(object, {
+                response: {
+                    'content-disposition': `attachment; filename="${filename}"`,
+                },
+            });
+            window.location = result;
+
+            return result;
+        };
+
+        const cnameUsage = function (cname) {
+            if (!cname) {
+                alert('请输入cname!');
+                return;
+            }
+            const url = appServer;
+            $.ajax({
+                url,
+            }).then((result) => {
+                const creds = result;
+                const client = new OSS.Wrapper({
+                    accessKeyId: creds.AccessKeyId,
+                    accessKeySecret: creds.AccessKeySecret,
+                    stsToken: creds.SecurityToken,
+                    endpoint: cname,
+                    cname: true,
+                    region,
+                    bucket,
+                });
+
+                const filename = document.getElementById('key-cname-objectName').value.trim();
+                console.log(filename);
+
+                const res = client.signatureUrl(filename, {
+                    response: {
+                        'content-disposition': `attachment; filename="${filename}"`,
+                    },
+                });
+                window.location = res;
+            });
+        };
+
+        window.onload = function () {
+            document.getElementById('file-button').onclick = function () {
+                if (uploadFileClient) {
+                    applyTokenDo(uploadFile, false);
+                } else {
+                    applyTokenDo(uploadFile);
+                }
+            };
+
+            var myfile = document.getElementById('file');
+            document.getElementById('file').onchange = function () {
+                //获取文件上传文件的文件名和扩展名  
+                if (myfile.files[0] == undefined) {
+                } else {
+                    $('.progress-bar').width('10');
+                    $('.progress-bar').html('0%');
+                    $('#object-key-file').val(myfile.files[0].name);
+                }
+            }
+
+            applyTokenDo(listFiles);
+        };
+    </SCript>
+</body>
+
+</html>

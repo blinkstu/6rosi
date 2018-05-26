@@ -1,0 +1,32 @@
+{
+    "name": "图集详情页面（包括私属）",
+    "action": "main/Index/albums",
+    "description": "",
+    "order": 10.0,
+    "more": {
+        "vars": {
+            "si_1": {
+                "title": "私塾套图是什么",
+                "value": "1",
+                "type": "text",
+                "rule": {
+                    "require": true
+                },
+                "message": {
+                    "require": "不能为空"
+                }
+            },
+            "si_2": {
+                "title": "私塾套图包括什么",
+                "value": "1",
+                "type": "text",
+                "rule": {
+                    "require": true
+                },
+                "message": {
+                    "require": "不能为空"
+                }
+            }
+        }
+    }
+}
